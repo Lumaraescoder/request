@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      div {
+        font-family: 'Saira Semi Condensed', sans-serif;
+        width: 100%;
+        background: black;
+      }
+      h3 {
+        color: white;
+      }
+      #table {
+        background: #12131b;
+        border-radius: 3px;
+      }
+      td,
+      tr {
+        border: none;
+        text-align: left;
+        padding: 8px;
+        border: solid;
+        border-width: 0px 0;
+      }
+      tr:nth-child(even) {
+        background: #ce3735 !important;
+        color: white;
+      }
+      tr:nth-child(odd) {
+        color: white;
+        font-family: 'Saira Semi Condensed', sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div style="text-align: center">
+      <h3>Tabela MVP</h3>
+      <table id="table" align="center"></table>
+
+      <script>
+        // Used Tinyurl to get a short url
+        const api_url =
+          'https://script.googleusercontent.com/macros/echo?user_content_key=tehViKBsbPiQekw-9YYQHbLXgWnhNaoRhiFQRFFnBa2iuS95saV8i0TR0GejdGuI-6sTzZ3dWor4ES__PbSbo3vTTObGJsJtm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnI8q_uVW07it83IRBSb1Qh7jh_Q03Wvhqrv0-6mUo7ZjZc3Dhugiui7G7bLAVisjJSERoGD-jVLp8OfKcRTL-NoFOq0rp7whtNz9Jw9Md8uu&lib=MKQt_4O7dzhe7_omshFlCu7p9P5UhHnNF';
+
+        const getApi = async (url) => {
+          const cols = [];
+          // Storing response
+          const response = await fetch(url);
+          // Storing data in form of JSON
+          const data = await response.json();
+          for (let i = 0; i < data.length; i++) {
+            for (let k in data[i]) {
+              if (cols.indexOf(k) === -1) {
+                // Push all keys to the array
+                cols.push(k);
+              }
+            }
+          }
+
+          let table = document.createElement('table');
+          // Create table row tr element of a table
+          let tr = table.insertRow(-1);
+          for (let i = 0; i < cols.length; i++) {
+            // Create the table header th element
+            let theader = document.createElement('th');
+            theader.innerHTML = cols[i];
+            // Append columnName to the table row
+            tr.appendChild(theader);
+          }
+
+          // Adding the data to the table
+          for (let i = 0; i < data.length; i++) {
+            // Create a new row
+            trow = table.insertRow(-1);
+            for (let j = 0; j < cols.length; j++) {
+              let cell = trow.insertCell(-1);
+              // Inserting the cell at particular place
+              cell.innerHTML = data[i][cols[j]];
+            }
+          }
+          // Add the newly created table containing json data
+          let el = document.getElementById('table');
+          el.innerHTML = '';
+          el.appendChild(table);
+          if (response) {
+            hideloader();
+          }
+          show(data);
+        };
+        getApi(api_url);
+      </script>
+    </div>
+  </body>
+</html>
